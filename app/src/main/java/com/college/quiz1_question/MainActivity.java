@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         //获取Sharedpreferences的方法
         mPreferences = getSharedPreferences(mSharedPrefFile, MODE_PRIVATE);
 
-        restaurePrefs(mShowCountTextView);
+        //restaurePrefs(mShowCountTextView);
     }
 
     /**
@@ -88,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
         mCount = 0;
         mShowCountTextView.setText("0");
         mShowCountTextView.setBackgroundColor(mmColor);
+
+        //clear the sharedPreferences
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
     //TODO 3
