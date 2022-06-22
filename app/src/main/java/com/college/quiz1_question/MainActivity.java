@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //TODO 1
+
     /**
      * Handles the onClick for the Count button.  Increments the value of the mCount global and
      * updates the textview.
@@ -68,20 +69,12 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view (Button) that was clicked.
      */
     public void countUp(View view) {
-        Button count = findViewById(R.id.count_button);
-        count.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCount++;
-                mShowCountTextView.setText(String.valueOf(mCount));
-
-            }
-        });
-
-
+        mCount = mCount + 1;
+        mShowCountTextView.setText("" + mCount);
     }
 
     //TODO 2
+
     /**
      * Handles the onClick for the Reset button.
      * Resets the global count and background
@@ -91,52 +84,29 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view (Button) that was clicked.
      */
     public void reset(View view) {
-        Button reset = findViewById(R.id.reset_button);
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCount =0;
-                mShowCountTextView.setText(String.valueOf(mCount));
-                mColor = ContextCompat.getColor(MainActivity.this,R.color.default_background);
-                mShowCountTextView.setBackgroundColor(mColor);
-
-                //clear perferencew
-                SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-                preferencesEditor.clear();
-                preferencesEditor.apply();
-            }
-        });
-
+        int mmColor = ContextCompat.getColor(MainActivity.this, R.color.default_background);
+        mCount = 0;
+        mShowCountTextView.setText("0");
+        mShowCountTextView.setBackgroundColor(mmColor);
     }
 
-
     //TODO 3
+
     /**
      * Handles the onClick for the 'Save Prefs' button.
      * Saves the Color and Counter to shared preferences
      *
      * @param view The view (Button) that was clicked.
      */
-
-
     public void savePrefs(View view) {
-        Button savePref = findViewById(R.id.save_button);
-        savePref.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //步骤2：实例化sharedpreference.editor对象，为了写入数据
-                SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-                //步骤3：将获取过来的值放入文件
-                preferencesEditor.putInt(COUNT_KEY,mCount);
-                preferencesEditor.putInt(COUNT_KEY,mColor);
-                //提交
-                preferencesEditor.commit();
-            }
-        });
-
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(COUNT_KEY, mShowCountTextView.getText().toString());
+        editor.putInt(COLOR_KEY, mColor);
+        editor.apply();
     }
 
     //TODO 4
+
     /**
      * Handles the onClick for the 'Restaure Prefs' button.
      * Reads the Color and Counter from the Preferences
@@ -145,17 +115,9 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view (Button) that was clicked.
      */
     public void restaurePrefs(View view) {
-        Button restaure = findViewById(R.id.start_activity_button);
-        restaure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCount= mPreferences.getInt("COUNT_KEY",mCount);
-                mShowCountTextView.setText(String.valueOf(mCount));
-                mColor=mPreferences.getInt("COUNT_KEY",mColor);
-                mShowCountTextView.setBackgroundColor(mColor);
-
-            }
-        });
+        String count = mPreferences.getString(COUNT_KEY, "");
+        int color = mPreferences.getInt(COLOR_KEY, 0);
+        mShowCountTextView.setText("" + count);
+        mShowCountTextView.setBackgroundColor(color);
     }
-
 }
