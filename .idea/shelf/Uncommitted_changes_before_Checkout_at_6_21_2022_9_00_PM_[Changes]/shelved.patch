@@ -1,0 +1,52 @@
+Index: app/src/main/java/com/college/quiz1_question/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.college.quiz1_question;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.os.Bundle;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.TextView;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n    int mCounter;\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n\r\n        // This EditText contains the user input\r\n        // for the number of burgers\r\n        EditText numberStr = findViewById(R.id.numberId);\r\n\r\n        // This textview displays the result of multiplying\r\n        // the content of the numberId EditText by 5\r\n        TextView resultTv = findViewById(R.id.resultId);\r\n\r\n        // TODO\r\n        // Implement the 2 listeners for buttons 'clear' and 'pay'\r\n        // One burger is $5\r\n        // Result should contain 5 multiplied by number chosen\r\n        // Display should be prefixed with the '$' sign such as $15\r\n        // Reset should clear all the fields\r\n\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/college/quiz1_question/MainActivity.java b/app/src/main/java/com/college/quiz1_question/MainActivity.java
+--- a/app/src/main/java/com/college/quiz1_question/MainActivity.java	
++++ b/app/src/main/java/com/college/quiz1_question/MainActivity.java	
+@@ -3,13 +3,16 @@
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+ import android.os.Bundle;
++import android.view.View;
+ import android.widget.Button;
+ import android.widget.EditText;
+ import android.widget.TextView;
+ 
+ public class MainActivity extends AppCompatActivity {
+ 
+-    int mCounter;
++    int mCounter, mTotal;
++    Button pay,clear;
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -23,6 +26,9 @@
+         // the content of the numberId EditText by 5
+         TextView resultTv = findViewById(R.id.resultId);
+ 
++        Button pay = findViewById(R.id.btnPayId);
++        Button clear = findViewById(R.id.btnResetId);
++
+         // TODO
+         // Implement the 2 listeners for buttons 'clear' and 'pay'
+         // One burger is $5
+@@ -30,5 +36,12 @@
+         // Display should be prefixed with the '$' sign such as $15
+         // Reset should clear all the fields
+ 
++        pay.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                mTotal = 
++            }
++        });
++
+     }
+ }
+\ No newline at end of file

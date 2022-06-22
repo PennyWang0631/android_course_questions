@@ -1,0 +1,85 @@
+Index: app/src/main/java/com/college/quiz1_question/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.college.quiz1_question;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.core.content.ContextCompat;\r\n\r\nimport android.content.SharedPreferences;\r\nimport android.graphics.Color;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.graphics.drawable.ColorDrawable;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.TextView;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n    // Current count.\r\n    private int mCount = 0;\r\n    // Current background color.\r\n    private int mColor;\r\n    // Text view to display both count and color.\r\n    private TextView mShowCountTextView;\r\n\r\n    // Key for current count当前计数键\r\n    private final String COUNT_KEY = \"count\";\r\n    // Key for current color当前颜色（为了存储）\r\n    private final String COLOR_KEY = \"color\";\r\n\r\n    // Shared preferences object\r\n    private SharedPreferences mPreferences;\r\n    // Name of shared preferences file\r\n    private static final String mSharedPrefFile = \"mysharedprefs\";\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n\r\n        // Initialize views, color, preferences\r\n        mShowCountTextView = findViewById(R.id.count_textview);\r\n        mColor = ContextCompat.getColor(this, R.color.default_background);\r\n        //写入数据：步骤1：创建一个Sharedpreferences对象，\r\n        //获取Sharedpreferences的方法\r\n        mPreferences = getSharedPreferences(mSharedPrefFile, MODE_PRIVATE);\r\n\r\n        restaurePrefs(mShowCountTextView);\r\n    }\r\n\r\n    /**\r\n     * Handles the onClick for the background color buttons.\r\n     * Gets background color of the button\r\n     * that was clicked and sets the textview background to that color.\r\n     * Saves the current background\r\n     *\r\n     * @param view The view (Button) that was clicked.\r\n     */\r\n    public void changeBackground(View view) {\r\n        int color = ((ColorDrawable) view.getBackground()).getColor();\r\n        mShowCountTextView.setBackgroundColor(color);\r\n        mColor = color;\r\n    }\r\n\r\n    //TODO 1\r\n    /**\r\n     * Handles the onClick for the Count button.  Increments the value of the mCount global and\r\n     * updates the textview.\r\n     *\r\n     * @param view The view (Button) that was clicked.\r\n     */\r\n    public void countUp(View view) {\r\n        Button count = findViewById(R.id.count_button);\r\n        count.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                mCount++;\r\n                mShowCountTextView.setText(String.valueOf(mCount));\r\n\r\n            }\r\n        });\r\n\r\n\r\n    }\r\n\r\n    //TODO 2\r\n    /**\r\n     * Handles the onClick for the Reset button.\r\n     * Resets the global count and background\r\n     * variables to the defaults, resets the views to those values,\r\n     * and clears the shared preferences\r\n     *\r\n     * @param view The view (Button) that was clicked.\r\n     */\r\n    public void reset(View view) {\r\n        Button reset = findViewById(R.id.reset_button);\r\n        reset.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                mCount =0;\r\n                mShowCountTextView.setText(String.valueOf(mCount));\r\n                mColor = ContextCompat.getColor(MainActivity.this,R.color.default_background);\r\n                mShowCountTextView.setBackgroundColor(mColor);\r\n\r\n                //clear perferencew\r\n                SharedPreferences.Editor preferencesEditor = mPreferences.edit();\r\n                preferencesEditor.clear();\r\n                preferencesEditor.apply();\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n\r\n    //TODO 3\r\n    /**\r\n     * Handles the onClick for the 'Save Prefs' button.\r\n     * Saves the Color and Counter to shared preferences\r\n     *\r\n     * @param view The view (Button) that was clicked.\r\n     */\r\n\r\n\r\n    public void savePrefs(View view) {\r\n        Button savePref = findViewById(R.id.save_button);\r\n        savePref.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                //步骤2：实例化sharedpreference.editor对象，为了写入数据\r\n                SharedPreferences.Editor preferencesEditor = mPreferences.edit();\r\n                //步骤3：将获取过来的值放入文件\r\n                preferencesEditor.putInt(COUNT_KEY,mCount);\r\n                preferencesEditor.putInt(COUNT_KEY,mColor);\r\n                //提交\r\n                preferencesEditor.commit();\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    //TODO 4\r\n    /**\r\n     * Handles the onClick for the 'Restaure Prefs' button.\r\n     * Reads the Color and Counter from the Preferences\r\n     * Updates the color and counter textviews.\r\n     *\r\n     * @param view The view (Button) that was clicked.\r\n     */\r\n    public void restaurePrefs(View view) {\r\n        Button restaure = findViewById(R.id.start_activity_button);\r\n        restaure.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                mCount= mPreferences.getInt(\"COUNT_KEY\",mCount);\r\n                mShowCountTextView.setText(String.valueOf(mCount));\r\n                mColor=mPreferences.getInt(\"COUNT_KEY\",mColor);\r\n                mShowCountTextView.setBackgroundColor(mColor);\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/college/quiz1_question/MainActivity.java b/app/src/main/java/com/college/quiz1_question/MainActivity.java
+--- a/app/src/main/java/com/college/quiz1_question/MainActivity.java	(revision ae76cabe8c22ae3d980a0a0844b8a25f9e1022b3)
++++ b/app/src/main/java/com/college/quiz1_question/MainActivity.java	(date 1655903980067)
+@@ -43,7 +43,25 @@
+         //获取Sharedpreferences的方法
+         mPreferences = getSharedPreferences(mSharedPrefFile, MODE_PRIVATE);
+ 
+-        restaurePrefs(mShowCountTextView);
++        Button savePref = findViewById(R.id.save_button);
++        savePref.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                savePrefs(mShowCountTextView);
++
++            }
++        });
++
++        Button restaure = findViewById(R.id.start_activity_button);
++        restaure.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                restaurePrefs(mShowCountTextView);
++
++            }
++        });
++
++
+     }
+ 
+     /**
+@@ -120,19 +138,14 @@
+ 
+ 
+     public void savePrefs(View view) {
+-        Button savePref = findViewById(R.id.save_button);
+-        savePref.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View v) {
+                 //步骤2：实例化sharedpreference.editor对象，为了写入数据
+-                SharedPreferences.Editor preferencesEditor = mPreferences.edit();
++                SharedPreferences preferences = getSharedPreferences(mSharedPrefFile,MODE_PRIVATE);
++                SharedPreferences.Editor preferencesEditor = preferences.edit();
+                 //步骤3：将获取过来的值放入文件
+                 preferencesEditor.putInt(COUNT_KEY,mCount);
+                 preferencesEditor.putInt(COUNT_KEY,mColor);
+                 //提交
+-                preferencesEditor.commit();
+-            }
+-        });
++                preferencesEditor.apply();
+ 
+     }
+ 
+@@ -145,17 +158,16 @@
+      * @param view The view (Button) that was clicked.
+      */
+     public void restaurePrefs(View view) {
+-        Button restaure = findViewById(R.id.start_activity_button);
+-        restaure.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View v) {
+-                mCount= mPreferences.getInt("COUNT_KEY",mCount);
++
++        SharedPreferences preferences = getSharedPreferences(mSharedPrefFile,MODE_PRIVATE);
++
++                mCount= preferences.getInt("COUNT_KEY",mCount);
+                 mShowCountTextView.setText(String.valueOf(mCount));
+-                mColor=mPreferences.getInt("COUNT_KEY",mColor);
++                mColor=preferences.getInt("COUNT_KEY",mColor);
+                 mShowCountTextView.setBackgroundColor(mColor);
+ 
+-            }
+-        });
++
++
+     }
+ 
+ }
