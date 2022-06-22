@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.graphics.drawable.ColorDrawable;
@@ -20,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
     // Text view to display both count and color.
     private TextView mShowCountTextView;
 
-    // Key for current count
+    // Key for current count当前计数键
     private final String COUNT_KEY = "count";
-    // Key for current color
+    // Key for current color当前颜色（为了存储）
     private final String COLOR_KEY = "color";
 
     // Shared preferences object
@@ -38,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
         // Initialize views, color, preferences
         mShowCountTextView = findViewById(R.id.count_textview);
         mColor = ContextCompat.getColor(this, R.color.default_background);
+        //写入数据：步骤1：创建一个Sharedpreferences对象，
+        //获取Sharedpreferences的方法
         mPreferences = getSharedPreferences(mSharedPrefFile, MODE_PRIVATE);
 
+        restaurePrefs(mShowCountTextView);
     }
 
     /**
@@ -64,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view (Button) that was clicked.
      */
     public void countUp(View view) {
+        Button count = findViewById(R.id.count_button);
+        count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCount++;
+                mShowCountTextView.setText(String.valueOf(mCount));
+
+            }
+        });
+
+
     }
 
     //TODO 2
@@ -76,7 +91,24 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view (Button) that was clicked.
      */
     public void reset(View view) {
+        Button reset = findViewById(R.id.reset_button);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCount =0;
+                mShowCountTextView.setText(String.valueOf(mCount));
+                mColor = ContextCompat.getColor(MainActivity.this,R.color.default_background);
+                mShowCountTextView.setBackgroundColor(mColor);
+
+                //clear perferencew
+                SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+                preferencesEditor.clear();
+                preferencesEditor.apply();
+            }
+        });
+
     }
+
 
     //TODO 3
     /**
@@ -85,7 +117,23 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view The view (Button) that was clicked.
      */
+
+
     public void savePrefs(View view) {
+        Button savePref = findViewById(R.id.save_button);
+        savePref.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //步骤2：实例化sharedpreference.editor对象，为了写入数据
+                SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+                //步骤3：将获取过来的值放入文件
+                preferencesEditor.putInt(COUNT_KEY,mCount);
+                preferencesEditor.putInt(COUNT_KEY,mColor);
+                //提交
+                preferencesEditor.commit();
+            }
+        });
+
     }
 
     //TODO 4
@@ -97,6 +145,17 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view (Button) that was clicked.
      */
     public void restaurePrefs(View view) {
+        Button restaure = findViewById(R.id.start_activity_button);
+        restaure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCount= mPreferences.getInt("COUNT_KEY",mCount);
+                mShowCountTextView.setText(String.valueOf(mCount));
+                mColor=mPreferences.getInt("COUNT_KEY",mColor);
+                mShowCountTextView.setBackgroundColor(mColor);
+
+            }
+        });
     }
 
 }
